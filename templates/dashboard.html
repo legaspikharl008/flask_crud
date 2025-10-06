@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Dashboard</h2>
+      <p class="text-muted">Quick overview of your app</p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-start border-primary border-4">
+        <div class="card-body">
+          <h5 class="card-title">Total Items</h5>
+          <h3 class="card-text">{{ total_items }}</h3>
+          <a href="{{ url_for('index') }}" class="btn btn-sm btn-primary mt-2">View Items</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-start border-success border-4">
+        <div class="card-body">
+          <h5 class="card-title">Total Users</h5>
+          <h3 class="card-text">{{ total_users }}</h3>
+          <a href="{{ url_for('users') }}" class="btn btn-sm btn-success mt-2">View Users</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-start border-warning border-4">
+        <div class="card-body">
+          <h5 class="card-title">Quick Actions</h5>
+          <a href="{{ url_for('create') }}" class="btn btn-sm btn-warning mt-2">Add Item</a>
+          <a href="{{ url_for('create_user') }}" class="btn btn-sm btn-warning mt-2">Add User</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm border-start border-danger border-4">
+        <div class="card-body">
+          <h5 class="card-title">Profile</h5>
+          <p class="card-text">{{ current_user.username }}</p>
+          <a href="{{ url_for('logout') }}" class="btn btn-sm btn-danger mt-2">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">Items vs Users</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">Total Items</h5>
+        </div>
+        <div class="card-body">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const pieCtx = document.getElementById('pieChart').getContext('2d');
+  const pieChart = new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+          labels: ['Items', 'Users'],
+          datasets: [{
+              label: 'Distribution',
+              data: [{{ total_items }}, {{ total_users }}],
+              backgroundColor: ['#0d6efd', '#198754'],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  position: 'bottom'
+              }
+          }
+      }
+  });
+
+  const barCtx = document.getElementById('barChart').getContext('2d');
+  const barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+          labels: ['Items'],
+          datasets: [{
+              label: 'Total Items',
+              data: [{{ total_items }}],
+              backgroundColor: '#ffc107'
+          }]
+      },
+      options: {
+          responsive: true,
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+</script>
+
+{% endblock %}
