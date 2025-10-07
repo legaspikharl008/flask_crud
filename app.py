@@ -6,6 +6,11 @@ from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Length, EqualTo
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
+import uuid
+from werkzeug.utils import secure_filename
+from flask_wtf.file import FileField, FileAllowed
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -223,4 +228,5 @@ if __name__ == "__main__":
 		db.create_all
 
     app.run(debug=True)   
+
 
