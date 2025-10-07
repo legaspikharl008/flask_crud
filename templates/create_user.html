@@ -5,16 +5,25 @@
     <h4 class="mb-0">Create User</h4>
   </div>
   <div class="card-body">
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
       {{ form.hidden_tag() }}
+
       <div class="mb-3">
         {{ form.name.label(class="form-label") }}
         {{ form.name(class="form-control", placeholder="Enter name") }}
       </div>
+
       <div class="mb-3">
         {{ form.email.label(class="form-label") }}
         {{ form.email(class="form-control", placeholder="Enter email") }}
       </div>
+
+      <div class="mb-3">
+        {{ form.photo.label(class="form-label") }}
+        {{ form.photo(class="form-control") }}
+        <div class="form-text text-muted">Allowed formats: JPG, PNG (max 2MB)</div>
+      </div>
+
       <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
       <a href="{{ url_for('users') }}" class="btn btn-secondary">Cancel</a>
     </form>
